@@ -19,9 +19,19 @@ RSpec.describe Customer do
     before do
       subject.add_rental rental
     end
-    it "レンタル期間を返す" do
+    it "レンタル期間をテキストで返す" do
       STATE = "Rental Record for #{name}\n\t#{movie_name}\t9.5\nAmount owed is 9.5\nYou earned 1 frequent renter points"
       expect(subject.statement).to eq STATE
+    end
+  end
+
+  describe "#html_statement" do
+    before do
+      subject.add_rental rental
+    end
+    it "レンタル期間をhtml形式で返す" do
+      HTML_STATE = "<h1>Rental Record for <em>#{name}</em></h1><p>\n\t#{movie_name}: 9.5<br>\n<p>You owe <em>9.5</em></p>\nOn thils rental You earned <em>1</em>frequent renter points</p>"
+      expect(subject.html_statement).to eq HTML_STATE
     end
   end
 end
