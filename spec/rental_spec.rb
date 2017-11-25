@@ -2,8 +2,8 @@ require_relative '../lib/movie.rb'
 require_relative '../lib/rental.rb'
 
 RSpec.describe Rental do
-  let(:price_code) { Movie::REGULAR }
-  let(:movie) { Movie.new("Matrix", price_code) }
+  let(:price) { RegularPrice.new }
+  let(:movie) { Movie.new("Matrix", price) }
   let(:days_rented) { 7 }
   subject { Rental.new(movie, days_rented) }
 
@@ -19,18 +19,18 @@ RSpec.describe Rental do
   end
   describe "#charge" do
     context "一般"
-      let(:price_code) { Movie::REGULAR }
+      let(:price) { RegularPrice.new }
       it "2日までは2、3日目以降は一日あたり1.5(ドル?)加えた数を返す" do
         expect(subject.charge).to eq (2 + (days_rented - 2) * 1.5)
       end
     context "新作" do
-      let(:price_code) { Movie::NEW_RELEASE }
+      let(:price) { NewReleasePrice.new }
       it "日数 * 3(ドル?)を返す" do
         expect(subject.charge).to eq (days_rented * 3)
       end
     end
     context "子供向け" do
-      let(:price_code) { Movie::CHILDRENS }
+      let(:price) { ChildrensPrice.new }
       it "3日までは1.5、4日目以降は一日あたり1.5(ドル?)加えた数を返す" do
         expect(subject.charge).to eq (1.5 + (days_rented - 3) * 1.5)
       end
@@ -39,21 +39,21 @@ RSpec.describe Rental do
   describe "#frequent_renter_points" do
     context "新作かつレンタル日数2日以上"
       let(:days_rented) { 2 }
-      let(:price_code) { Movie::NEW_RELEASE }
+      let(:price) { NewReleasePrice.new }
       it "2を返す" do
         expect(subject.frequent_renter_points).to eq (2)
       end
     context "'新作かつレンタル日数2日以上'でない" do
       context "新作で1日レンタル" do
         let(:days_rented) { 1 }
-        let(:price_code) { Movie::NEW_RELEASE }
+        let(:price) { NewReleasePrice.new }
         it "1を返す" do
           expect(subject.frequent_renter_points).to eq (1)
         end
       end
       context "一般で2日レンタル" do
         let(:days_rented) { 2 }
-        let(:price_code) { Movie::REGULAR }
+        let(:price) { RegularPrice.new }
         it "1を返す" do
           expect(subject.frequent_renter_points).to eq (1)
         end
