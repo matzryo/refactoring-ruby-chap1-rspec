@@ -2,7 +2,7 @@ require_relative '../lib/movie.rb'
 
 RSpec.describe Movie do
   let(:title) { "Matrix" }
-  let(:price_code) { 0 }
+  let(:price_code) { Movie::REGULAR }
   subject { Movie.new(title, price_code) }
 
   describe "#title" do

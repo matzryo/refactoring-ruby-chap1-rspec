@@ -4,7 +4,7 @@ require_relative '../lib/customer.rb'
 
 RSpec.describe Customer do
   let(:movie_name) {"Matrix"}
-  let(:movie) { Movie.new(movie_name, 0) }
+  let(:movie) { Movie.new(movie_name, Movie::REGULAR) }
   let(:days_rented) { 7 }
   let(:rental) { Rental.new(movie, days_rented) }
   let(:name) { "taro" }
