@@ -2,7 +2,8 @@ require_relative '../lib/movie.rb'
 require_relative '../lib/rental.rb'
 
 RSpec.describe Rental do
-  let(:movie) { Movie.new("Matrix", 0) }
+  let(:price_code) { 0 }
+  let(:movie) { Movie.new("Matrix", price_code) }
   let(:days_rented) { 7 }
   subject { Rental.new(movie, days_rented) }
 
@@ -14,6 +15,25 @@ RSpec.describe Rental do
   describe "#days_rented" do
     it "レンタル期間を返す" do
       expect(subject.days_rented).to eq days_rented
+    end
+  end
+  describe "#charge" do
+    context "一般"
+      let(:price_code) { 0 }
+      it "2日までは2、3日目以降は一日あたり1.5(ドル?)加えた数を返す" do
+        expect(subject.charge).to eq (2 + (days_rented - 2) * 1.5)
+      end
+    context "新作" do
+      let(:price_code) { 1 }
+      it "日数 * 3(ドル?)を返す" do
+        expect(subject.charge).to eq (days_rented * 3)
+      end
+    end
+    context "子供向け" do
+      let(:price_code) { 2 }
+      it "3日までは1.5、4日目以降は一日あたり1.5(ドル?)加えた数を返す" do
+        expect(subject.charge).to eq (1.5 + (days_rented - 3) * 1.5)
+      end
     end
   end
 end
