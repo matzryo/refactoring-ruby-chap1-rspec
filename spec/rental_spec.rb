@@ -36,4 +36,28 @@ RSpec.describe Rental do
       end
     end
   end
+  describe "#frequent_renter_points" do
+    context "新作かつレンタル日数2日以上"
+      let(:days_rented) { 2 }
+      let(:price_code) { 1 }
+      it "2を返す" do
+        expect(subject.frequent_renter_points).to eq (2)
+      end
+    context "'新作かつレンタル日数2日以上'でない" do
+      context "新作で1日レンタル" do
+        let(:days_rented) { 1 }
+        let(:price_code) { 0 }
+        it "1を返す" do
+          expect(subject.frequent_renter_points).to eq (1)
+        end
+      end
+      context "一般で2日レンタル" do
+        let(:days_rented) { 0 }
+        let(:price_code) { 2 }
+        it "1を返す" do
+          expect(subject.frequent_renter_points).to eq (1)
+        end
+      end
+    end
+  end
 end
